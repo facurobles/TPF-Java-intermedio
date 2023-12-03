@@ -11,39 +11,50 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name="Equipo")
-public abstract class Equipo {
+@Table(name = "Equipo")
+public class Equipo implements Serializable{
 
     //Atributes
+    //Mapeo entidad relacion
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String nombre;
-    
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "equipo_titulares", joinColumns = @JoinColumn(name = "equipo_id"), inverseJoinColumns = @JoinColumn(name = "titular_id"))
     private List<Jugador> titulares;
-    
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "equipo_suplentes", joinColumns = @JoinColumn(name = "equipo_id"), inverseJoinColumns = @JoinColumn(name = "suplente_id"))
     private List<Jugador> suplentes;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tecnico_id")
     private Tecnico directorTecnico;
-    
+
     private Integer puntos = 0;
     private Integer cantPartidosJugados = 0;
-    private Boolean tipo;                        // si es true es Futbol 11 , si es false es Futbol de salon
 
     //Getters and Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -92,13 +103,21 @@ public abstract class Equipo {
         this.cantPartidosJugados = cantPartidosJugados;
     }
 
-    public Boolean getTipo() {
-        return tipo;
+    //constructor
+    public Equipo() {
     }
 
-    public void setTipo(Boolean tipo) {
-        this.tipo = tipo;
+    ;
+    
+    public Equipo(String nombre) {
+        this.nombre = nombre;
+        this.titulares = new ArrayList<>();
+        this.suplentes = new ArrayList<>();
+        this.directorTecnico = new Tecnico();
     }
+
+    ;
+    
 
     //TemplateMethods
     public void armarEquipo() {
@@ -109,10 +128,96 @@ public abstract class Equipo {
     }
 
     //Paso 1
-    public abstract void agregarTitulares();
+    public void agregarTitulares() {
+        System.out.println("Ingrese datos de los jugadores titulares: ");
+        for (int i = 1; i <= 11; i++) {
+            System.out.println("ciclo " + i);
+
+            Scanner lectura = new Scanner(System.in);
+            System.out.println("Ingrese su nombre: ");
+            String nombreTitular = lectura.next();
+            System.out.println("Ingrese su apellido: ");
+            String apellido = lectura.next();
+
+            int edad;
+            do {
+                System.out.println("Ingrese su edad: ");
+                while (!lectura.hasNextInt()) {
+                    System.out.println("Debe ingresar un número, intente nuevamente:");
+                    lectura.next();
+                }
+                edad = lectura.nextInt();
+                if (edad <= 0) {
+                    System.out.println("La edad debe ser un número entero positivo. Intente nuevamente.");
+                }
+            } while (edad <= 0);
+
+            int nroCamiseta;
+            do {
+                System.out.println("Ingrese su número de camiseta: ");
+                while (!lectura.hasNextInt()) {
+                    System.out.println("Debe ingresar un número, intente nuevamente:");
+                    lectura.next();
+                }
+                nroCamiseta = lectura.nextInt();
+                if (nroCamiseta <= 0) {
+                    System.out.println("El número de camiseta debe ser un número entero positivo. Intente nuevamente.");
+                }
+            } while (nroCamiseta <= 0);
+
+            Jugador jugador = new Jugador(nombreTitular, apellido, edad, nroCamiseta, true);
+
+            titulares.add(jugador);
+        }
+        this.setTitulares(titulares);
+    }
 
     //Paso 2
-    public abstract void agregarSuplentes();
+    public void agregarSuplentes() {
+        System.out.println("Ingrese datos de los jugadores suplentes: ");
+        for (int i = 1; i <= 11; i++) {
+            System.out.println("ciclo " + i);
+
+            Scanner lectura = new Scanner(System.in);
+            System.out.println("Ingrese su nombre: ");
+            String nombreSuplente = lectura.next();
+            System.out.println("Ingrese su apellido: ");
+            String apellido = lectura.next();
+
+            int edad;
+            do {
+                System.out.println("Ingrese su edad: ");
+                while (!lectura.hasNextInt()) {
+                    System.out.println("Debe ingresar un número, intente nuevamente:");
+                    lectura.next();
+                }
+                edad = lectura.nextInt();
+                if (edad <= 0) {
+                    System.out.println("La edad debe ser un número entero positivo. Intente nuevamente.");
+                }
+            } while (edad <= 0);
+
+            int nroCamiseta;
+            do {
+                System.out.println("Ingrese su número de camiseta: ");
+                while (!lectura.hasNextInt()) {
+                    System.out.println("Debe ingresar un número, intente nuevamente:");
+                    lectura.next();
+                }
+                nroCamiseta = lectura.nextInt();
+                if (nroCamiseta <= 0) {
+                    System.out.println("El número de camiseta debe ser un número entero positivo. Intente nuevamente.");
+                }
+            } while (nroCamiseta <= 0);
+
+            Jugador jugador = new Jugador(nombreSuplente, apellido, edad, nroCamiseta, false);
+
+            suplentes.add(jugador);
+        }
+        this.setSuplentes(suplentes);
+    }
+
+    ;
     
     //Paso 3
     public void agregarTecnico() {
@@ -122,22 +227,26 @@ public abstract class Equipo {
         String nombreTecnico = lectura.next();
         System.out.println("Ingrese su apellido: ");
         String apellido = lectura.next();
-        System.out.println("Ingrese su edad: ");
-        int edad = lectura.nextInt();
+        
+        int edad;
+            do {
+                System.out.println("Ingrese su edad: ");
+                while (!lectura.hasNextInt()) {
+                    System.out.println("Debe ingresar un número, intente nuevamente:");
+                    lectura.next();
+                }
+                edad = lectura.nextInt();
+                if (edad <= 0) {
+                    System.out.println("La edad debe ser un número entero positivo. Intente nuevamente.");
+                }
+            } while (edad <= 0);
+            
         Tecnico tecnico = new Tecnico(nombreTecnico, apellido, edad);
-        this.directorTecnico = tecnico;
+        this.setDirectorTecnico(tecnico);
     }
 
     //Paso 4
     public void mostrarEquipo() {
-
-        //version de futbol
-        String version;
-        if (this.tipo) {
-            version = "Fútbol Once";
-        } else {
-            version = "Fútbol Salón";
-        }
 
         //lista de jugadores titulares
         String tit = nombresTitulares();
@@ -148,24 +257,23 @@ public abstract class Equipo {
         //Datos del equipo
         String datosEquipo = "Equipo: " + this.nombre + "\n"
                 + "Director Técnico: " + this.directorTecnico.getNombre() + this.directorTecnico.getApellido() + "\n"
-                + "Tipo de juego: " + version + "\n"
                 + "Titulares: " + tit + "\n"
                 + "Suplentes: " + sup + "\n"
                 + "Puntos: " + String.valueOf(this.puntos) + "\n"
                 + "Partidos Jugados: " + String.valueOf(this.cantPartidosJugados);
-        
+
         System.out.println(datosEquipo);
     }
 
     //Other Methods
     public String nombresTitulares() {
-        List<String> listaTitulares = this.titulares.stream().map((titular) -> titular.getApellido()).collect(Collectors.toList());
+        List<String> listaTitulares = this.titulares.stream().map((titular) -> titular.getApellido() + titular.getNombre()).collect(Collectors.toList());
         String nombresTitulares = listaTitulares.stream().collect(Collectors.joining(", "));
         return nombresTitulares;
     }
 
     public String nombresSuplentes() {
-        List<String> listaSuplentes = this.suplentes.stream().map((suplente) -> suplente.getApellido()).collect(Collectors.toList());
+        List<String> listaSuplentes = this.suplentes.stream().map((suplente) -> suplente.getApellido() + suplente.getNombre()).collect(Collectors.toList());
         String nombresSuplentes = listaSuplentes.stream().collect(Collectors.joining(", "));
         return nombresSuplentes;
     }
@@ -173,10 +281,8 @@ public abstract class Equipo {
     public void cambiarTecnico(Tecnico tecnico) {
         this.directorTecnico = tecnico;
     }
-
-    ///this.titulares.stream().anyMatch((titular) -> jugadorSale == titular.getNombre())
-    //usar esta porcion de codigo en la clase de negocio para verificar que el jugador ingresado
-    //efectivamente esta en la lista de titulares si no pedir que se ingrese nuevamete
+    
+    
     public void cambiarJugadores(String jugadorSale, String jugadorEntra) {
         for (Jugador jugador : this.titulares) {
             if (jugador.getNombre().equals(jugadorSale)) {

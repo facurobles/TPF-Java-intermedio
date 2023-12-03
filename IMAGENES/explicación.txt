@@ -1,0 +1,18 @@
+Al intentar aplicar el patrón de diseño Template Methods bajo un diagrama de clases que tenía una clase abstracta (Equipo) de la que heredaban
+dos clases concretas (EquipoDeOnce y EquipoDeCinco) con las que se pretendía simular el registro de equipos de fútbol 11 y fútbol 5, me encontré
+con la imposibilidad de realizar el mapeo de entidad-relación en la clase Equipo ya que era abstracta y no podía ser instanciada, pero tampoco podía
+realizarlo en las clases hijas ya que los atributos habían sido definidos en la clase padre, Equipo, pensé en definir de forma repetida los atributos
+en las clases hijas pero no estaría haciendo un buen uso de la herencia ni del Modelo de componentes JavaBean en la clase padre. 
+Opté por realizar un programa que sólo registra equipos de 11 y asegurarme de demostrar de mis conocimientos en el resto de temas brindados
+ en el curso pero dejando sin cumplimentar el punto que pedía que se aplicara el patrón de diseño Template Methods.
+
+El Programa fue realizado con el marco de trabajoo SpringBoot, conocimientos adquiridos en el curso Argentina Programa 4.0 FullStack
+para así poder agilizar el trabajo de configuración, con el IDE NetBeans, el ORM fue realizado utilizando JPA de Hibernate, y los datos
+ son presistidos contra una BD relacional MySQL.
+
+Quedo a su disposición para cualquier consulta y correción.
+Desde ya muchísimas gracias por su pasión en la tarea de brindarnos conocimientos tan importantes y valiosos. Saludos.
+
+Robles Hugo Facundo
+email: Hfacu.robles@gmail.com
+web: www.roblesfacundo.com.ar

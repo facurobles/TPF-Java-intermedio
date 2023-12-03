@@ -7,10 +7,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name="Tecnico")
-public class Tecnico {
+public class Tecnico implements Serializable{
     
     //Atributes
     @Id
@@ -24,6 +25,14 @@ public class Tecnico {
     
     
     //Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
