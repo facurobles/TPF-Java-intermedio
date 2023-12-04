@@ -33,5 +33,11 @@ public class SEquipo implements IEquipo{
     public boolean existById(Integer id) {
         return rEquipo.existsById(id);
     }
+
+    @Override
+    public void eliminarEquipo(Integer id) {
+        rEquipo.deleteById(id);
+    }
+
     
 }

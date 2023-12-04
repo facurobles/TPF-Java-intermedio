@@ -15,4 +15,7 @@ public interface IEquipo {
     public Optional<Equipo> traerEquipo(Integer id);
     
     public boolean existById (Integer id);
+    
+    public void eliminarEquipo(Integer id);
+    
 }

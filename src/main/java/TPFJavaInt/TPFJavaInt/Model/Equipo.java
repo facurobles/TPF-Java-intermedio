@@ -42,8 +42,8 @@ public class Equipo implements Serializable{
     @JoinColumn(name = "tecnico_id")
     private Tecnico directorTecnico;
 
-    private Integer puntos = 0;
-    private Integer cantPartidosJugados = 0;
+    private Integer puntos;
+    private Integer cantPartidosJugados;
 
     //Getters and Setters
 
@@ -114,6 +114,8 @@ public class Equipo implements Serializable{
         this.titulares = new ArrayList<>();
         this.suplentes = new ArrayList<>();
         this.directorTecnico = new Tecnico();
+        this.puntos = 0;
+        this.cantPartidosJugados = 0;
     }
 
     ;
